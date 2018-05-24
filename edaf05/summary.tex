@@ -83,22 +83,71 @@
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
 
-\section{Introduction} % Major section
+\section{Algorithms} % Major section
 
-Content 
+This section will describe the diffrent problems and algorithms covered in the course.
 
-\subsection{Subsection 1} % Sub-section
-Some more content
+\subsection{Stable Marriage} % Sub-section
+Given two sets $X = {x_{1}, x_{2}, \dots x_{n}}$ and $Y = {y_{1}, y_{2}, \dots y_{n}}$ a mathcing $M$ is a set of pairs $(x_{i}, y_{j})$ such that an $x \in X$ and an $y \in Y$ appear in most one pair. Thus it follows that a matching does not let anybody have multiple partners.
 
-\subsection{Subsection 2} % Sub-section
+\par If the size of $M$ is $n$ it is called a \textbf{perfect matching} (All members of $X$ and $Y$ were matched). Hovever a perfect match is insufficient. All $x$ and $y$ have a preferred list, sorted in descending order, of the opposite set. The matching $M$ is considered \textbf{unstable} if it contains to pairs where they would rather switch partners. \textit{i.e.}\\
+$x_{i}$ prefers $y_{j}$ and $y_{j}$ prefers $x_{i}$ \\
+or \\
+$y_{p}$ prefers $x_{q}$ and $x_{q}$ prefers $x_{p}$ \\
+Is it always possible to find a stable matching with no unstable pairs?
 
-Some more content
+\subsubsection{The Gale-Shapely algorithm}
+As each person has a preferred list of partners each $x$ just needs to remember the position in the list. But as $y$ has to accept $y$ has to check if $x$ is before the current matched $x_{y}$. This may need $O(n)$ operations. A naive implementation of this algorithm may have a time complexity of $O(n^3)$ as each $x$ tries to match with each $y$ and each ask take $O(n)$ time. To reduce time complexity each $y$ should not save a prefence list, instead they should save an inverted list. Thus \texttt{[3, 2, 4, 1]} means that $x_{1}$ comes at position 3 and $x_{4}$ comes at position 1. This reduces the operation to constant time. Below is a Java implementation of the Gale-Shapely algorithm.
 
-\begin{figure}[H] % Example image
-\center{\includegraphics[width=0.5\linewidth]{placeholder}}
-\caption{Example image.}
-\label{fig:speciation}
+\begin{lstlisting}[language=Java]
+public String match() {
+        for(Person p: persons) {
+            if(p.getId() % 2 == 0) {
+                y.add(p);
+            } else {
+                x.addLast(p);
+            }
+        }
+        while(x.size() > 0) {
+            Person m = x.removeFirst();
+            int w = (m.getPrefered()/2)-1;
+            if(y.get(w).matched == null) {
+                y.get(w).matched = m;
+                m.matched = y.get(w);
+            } else if(y.get(w).compareMatched(m)) {
+                x.addLast(y.get(w).matched);
+                y.get(w).matched = m;
+                m.matched = y.get(w);
+            } else {
+                x.addLast(m);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Person w : y) {
+            sb.append(w.matched.name + " -- " + w.name + "\n");
+        }
+        return sb.toString();
+    }
+\end{lstlisting}
+
+\subsection{Greedy algorithms} % Sub-section
+The definition is not trivial. Main idea is to make the best local decision at a potential cost at the global level. Herein lies the problem of finding the rule wich solves the problem optimally. There are two ways we can prove optimallity. 
+\begin{enumerate}
+\item If the greedy algorithm is at least as good as an optimal solution we know it is also optimal
+\item Exchange argument -- transform the output of an optimal algorithm to the output of the greedy algorithm
+\end{enumerate}
+
+\subsubsection{Greedy graph algorithms}
+How do we find the shortest path in a given graph? to every other node? Can we find this efficiently? Edges have weights wich can be both negative and positive (although easier with positive).
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{graph}}
+\caption{Example graph.}
+\label{exgraph}
 \end{figure}
+
+\subsubsection{Dijkstra's algorithm}
+Given a directed graph $G(V, E)$ a weight function $w: E -> R$ and a node $s \in V$ Dijkstra's algorithm computes the path to every other node. 
 
 \section{Content Section} % Major section
 
@@ -111,38 +160,6 @@ Some more content
 \subsubsection{Subsubsection 2} % Sub-sub-section
 
 Some more content
-
-\begin{lstlisting}[language=Python]
-import numpy as np
- 
-def incmatrix(genl1,genl2):
-    m = len(genl1)
-    n = len(genl2)
-    M = None #to become the incidence matrix
-    VT = np.zeros((n*m,1), int)  #dummy variable
- 
-    #compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2),1) 
- 
-    for i in range(m-1):
-        for j in range(i+1, m):
-            [r,c] = np.where(M2 == M1[i,j])
-            for k in range(len(r)):
-                VT[(i)*n + r[k]] = 1;
-                VT[(i)*n + c[k]] = 1;
-                VT[(j)*n + r[k]] = 1;
-                VT[(j)*n + c[k]] = 1;
- 
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
- 
-                VT = np.zeros((n*m,1), int)
- 
-    return M
-\end{lstlisting}
 
 
 \begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
