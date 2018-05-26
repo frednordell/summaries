@@ -80,6 +80,7 @@
 
 \tableofcontents % Include a table of contents
 \lstlistoflistings % Include a table of lstlistings
+\listoffigures % Include listing of figures
 
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
@@ -324,18 +325,221 @@ Network flow problems are similar to Graph problems, but in network flow problem
 \par The \textbf{max-flow min-cut} theorem states that in the flow network you can calculate the maximum flow from $s$ to $t$ using the weight of the \textbf{minimum cuts}. That is, the weight of the edges that if removed would disconnect the source from the sink adds upp to the maximum flow from $s$ to $t$.
 
 \subsubsection{Ford-Fulkeson algorithm}
+The ford-fulkeson is a greedy algorithm that solves the \textbf{max-flow min-cut} problem. The main principle is to push as much flow up all edges until they are maxed. It terminates when no more flow can be pushed. If a BFS is used to search the graph it is called Edmonds-Karp's algorithm.
 
+\par The running time of the Ford-Fulkeson algorithm is $O(C \cdot m)$ where $C$ is the total capacity of all edges and $m$ is the number of edges. This can be improved upon with the fundamentally differnt \textbf{Preflow-Push} algorithm. This algorithm ignores the conservation constraint and instead creates a preflow mich is modified until it becomes the maximum flow.
 
-\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
-
-\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-\newblock Assortative pairing and life history strategy - a cross-cultural
-  study.
-\newblock {\em Human Nature}, 20:317--330.
+\begin{lstlisting}[language=Python, caption=Edmonds-Karp in Python]
+# Returns the maximum flow from s to t in the given graph
+    def EdmondsKarp(self, source, sink):
  
-\end{thebibliography}
+        # This array is filled by BFS and to store path
+        parent = [-1] * (self.ROW)
+ 
+        max_flow = 0 # There is no flow initially
+ 
+        # Augment the flow while there is path from source to sink
+        while self.BFS(source, sink, parent):
+ 
+            # Find minimum residual capacity of the edges along the
+            # path filled by BFS. Or we can say find the maximum flow
+            # through the path found.
+            path_flow = float("Inf")
+            s = sink
+            while s != source:
+                path_flow = min(path_flow, self.graph[parent[s]][s])
+                s = parent[s]
+ 
+            # Add path flow to overall flow
+            max_flow += path_flow
+ 
+            # update residual capacities of the edges and reverse edges
+            # along the path
+            v = sink
+            while v !=  source:
+                u = parent[v]
+                self.graph[u][v] -= path_flow
+                self.graph[v][u] += path_flow
+                v = parent[v]
+ 
+        return max_flow
+\end{lstlisting}
 
-%----------------------------------------------------------------------------------------
+\begin{lstlisting}[language=Scala, caption=Preflow-Push in Scala]
+def pushRelabel(graph: Graph, source: Int, sink: Int): Graph = {
+        val n: Int = graph.length
+        val resGraph: Graph = ArrayBuffer.fill(n, n)(0)
+        val height: ArrayBuffer[Int] = ArrayBuffer.fill(n)(0) //height of node
+        val excess: ArrayBuffer[Int] = ArrayBuffer.fill(n)(0) //flow into node minus flow from node
+        val seen: ArrayBuffer[Int] = ArrayBuffer.fill(n)(0) //neighbours seen since last relabel
+        //node "queue" n-2 because source and sink are not included
+        val nodeList: ArrayBuffer[Int] = ArrayBuffer.fill(n)(0).zipWithIndex.map(t => t._2).filterNot(e => (e == source) || (e == sink))
 
+        def push(u: Int, v: Int): Unit = {
+            val send = scala.math.min(excess(u), graph(u)(v) - resGraph(u)(v))
+            resGraph(u)(v) += send
+            resGraph(v)(u) -= send
+            excess(u) -= send
+            excess(v) += send
+        }
+
+        def relabel(u: Int): Unit = {
+            // find smallest new height making a push possible
+            // if it exists at all
+            var minHeight = Int.MaxValue / 3
+            for (v <- 0 until n) {
+                if ((graph(u)(v) - resGraph(u)(v)) > 0) {
+                    minHeight = scala.math.min(minHeight, height(v))
+                    height(u) = minHeight + 1
+                }
+            }
+        }
+
+        def discharge(u: Int): Unit = {
+            while (excess(u) > 0) {
+                if (seen(u) < n) { //check next neighbour
+                    val v = seen(u)
+                    if ((graph(u)(v) - resGraph(u)(v) > 0) && (height(u) > height(v))) {
+                        push(u, v)
+                    } else {
+                        seen(u) += 1
+                    }
+                } else { //we have checked all neighbours. must relabel
+                    relabel(u)
+                    seen(u) = 0
+                }
+            }
+        }
+
+        height(source) = n
+        excess(source) = Int.MaxValue / 3
+        for (v <- 0 until n) {
+            push(source, v)
+        }
+
+        var p = 0
+        while (p < nodeList.length) {
+            val u = nodeList(p)
+            val oldHeight = height(u)
+            discharge(u)
+            if (height(u) > oldHeight) {
+                nodeList.insert(0, nodeList.remove(p))
+                p = 0
+            } else {
+                p += 1
+            }
+        }
+        return resGraph
+    }
+\end{lstlisting}
+
+\subsubsection{Special cases}
+
+\paragraph{Maximum Edge-disjointed path}
+Given a directed Graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{edge-disjoint}, two paths that do not have two internal edges in common, paths from $s$ to $t$. This can be done by setting all capacities in the network ecept edges connected to either $s$ or $t$ to one.
+
+\paragraph{Node independent path}
+Given the directed graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{vertex-independent} paths from $s$ to $t$. Again two paths are inependent if they do not have two internal verticies in common, excluding $s$ and $t$
+
+\section{Complexity}
+This section will cover notations and hardness of prolems in this course.
+
+\subsection{Big O notation}
+Big O is a way to describe how algorithms grow as their input size grows, this can be applied to both running time and space requirement. When analyzing algorithms you analyze how many times the different operations are run and find the dominating term. This way when the size of $n$ grows we can compare algorithms efficency. If the algorithm is run in some complexity then all larger complexities is also applicable. Below is a list of the most common complexities in order.
+
+\begin{enumerate}
+    \item $O(1)$
+    \item $O(log(n))$
+    \item $O(n)$
+    \item $O(n \cdot log(n))$
+    \item $O(n^2)$
+    \item $O(2^n)$
+    \item $O(n!)$
+\end{enumerate}
+
+\subsubsection{Memory complexity}
+Big O notation in relation to memory denotes how memory allocation grows when the input $n$ grows. If for example we store a matrix of verticies and eges the complexity would be $O(n \cdot m$. Commonly used in relation to dynamic programming.
+
+\subsection{P, NP, NP-Complete \& NP-hard}
+
+\paragraph{Decision and Optimization problems}
+A decision problem is a problem that ask ''Does $X$ exist for $Y$?'' contrary to ''What is the $X$ of $Y$?''.
+
+\paragraph{P}
+$P$ is the complexity class that represent all problems that can be solved in \textbf{polynomial time}. All the algorithms in this class solves $P$ class problems.
+
+\paragraph{NP}
+$NP$, or nondeterministic polynomial, represents all the problems that can be checked but not necessarily solved in polynomial time. Note that $P \subseteq NP$.
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{np}}
+\caption{Euler diagram for P, NP, NP-complete and NP-hard problems.}
+\label{npProblems}
+\end{figure} 
+
+\paragraph{$P \neq NP$}
+This is one of the millenium problems, The problem is to prove that some problems cannot be computed in polynomial time. This is \textbf{not} proven but many conputer scientist think it is. To prove $P = NP$ would be groundbreaking as many security algorithms rely on the fact that $P \neq NP$.
+
+\subsubsection{NP-hard}
+NP-hard problems really shouldnt be named as such, as there problems are not nessecarlly in $NP$ these problems are problems that are ''at least as hard as the hardest problems in $NP$''. More specifically a problem $X$ is considered NP-hard if each problem $Y \in NP$ can be reduced to $X$.
+
+\subsubsection{NP-complete}
+These problems exists in $NP$ wich is described above. Consider a problem $X \in NP$, assume that each problem $Y \in NP$ can be reduced to $X$ then $X$ is NP-complete. Hence the two critieria for a problem to be NP-complete is.
+\begin{itemize}
+    \item $X \in NP$
+    \item For all $Y \in NP$ we have $Y \leq_{p} X$
+\end{itemize}
+NP-complete problems are the hardest problems in $NP$, their class is $NPC$.
+
+\subsubsection{Examples of NP-complete problems}
+
+\paragraph{3-sat}
+Is the problem of satisfying a given boolean formula, that is wheter or not the variables of a given boolean formula can evaluate to TRUE. For example, the formula ''a AND NOT b'' is satisfiable because one can find the values a = TRUE and b = FALSE, which make (a AND NOT b) = TRUE. In contrast, ''a AND NOT a' is unsatisfiable.
+
+\paragraph{Set cover}
+Given a set of elements $S = {e_{1}, e_{2}, \dots, e_{n}}$ also called \textit{the universe} and a collection $M$ of sets $m$ whose union is equal to the universe. The problem is to find the smallest sub-collection of $M$ whose union equals the universe. Imagine boxes of LEGO with different pieces in them, $M$, how many boxes do i have to pick to build my desired LEGO ship?
+
+\paragraph{3-dimentional matching}
+This is a generalization of bipartite matching, 2-dimentional matching, to 3-dimentional hypergraphs.
+
+\paragraph{Vertex cover}
+Given a graph $G = (V, E)$ then set $S \subseteq V$ such that for every edge $(u, v) \in E$ we have ${u, v} \subseteq S$. That is, every edge $e \in E$ has at least one end in $S$. $S$ is called a \textbf{Vertex Cover}.
+
+\par The NP-hard version of this problem, The minimum vertex cover, is the optimization and aims to find the smallest subset of verticies which reach all verticies in a graph 
+
+\paragraph{Graph coloring}
+This problem is in essence the labeling of elements in a graph with a certain constraint. In its simplest form we want to color the verticies in a graph such that no two connected verticies share a color. This problem is only NP-complete if the number of colors are larger than 3.
+
+\par There is also the Graph Coloring Optimization problem, which is NP-hard. As even given a solution, you cannot say if is the minimum or not.
+
+\paragraph{Hamiltonial Paths and Cycle}
+Given a graph $G = (V, E)$ if you can traverse the graph and only visit any node one time then the graph contains a \textbf{hamiltonian path}. A \textbf{hamiltonian cycle} is a hamiltonian path that terminates in the start node.
+
+\par The NP-hard problem, Travelling salesman is the optimization of this problem.
+
+\paragraph{Knapsack problem}
+Given a set of items, each with a wheight and value. Determine the number of items that maximizes the value with a weight $\leq$ a given limit.  
+
+\par The optimization of this problem is, you guessed it, NP-hard. That is we want to find the optimal ration of value and weight.
+
+\subsubsection{Examples of NP-hard problems}
+
+\paragraph{Maximum indipendent set}
+Given a graph $G = (V, E)$ and the nodes belong to a set $S$. The problem is to find the maximum set of nodes that are \textbf{independent}. Two nodes are independent if the nodes don't have an edge directly connecting them.
+
+\paragraph{Travelling salesman problem}
+Given a weighted graph, what is the shortest (minimum weight) path that visit each node and terminates in the start node.
+
+\subsubsection{Identifying the degree of a problem}
+Strategy for reduction:
+\begin{itemize}
+    \item Try to reduce to a known $P$ problem, otherwise step 2
+    \item Try to reduce to a known NP-complete problem
+    \item It's probably NP-hard
+\end{itemize}
+
+\paragraph{Reducing a problem}
+If $Y \leq_{p} X$  then we can say that $Y$ is easy or that $X$ is hard. Hence to reduce a problem, if we can show that our problem is at least as hard as a known problem we can figure out how hard our problem is.
+
+\par  So if you can reduce your problem to a NP-complete problem, you either have a NP-complete or NP-hard problem.
 \end{document}
