@@ -5,7 +5,7 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
-
+%\usepackage{asmath} % Required for math functions with cases 
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
 \linespread{1.2} % Line spacing
@@ -80,6 +80,7 @@
 \tableofcontents % Include a table of contents
 \lstlistoflistings % Include a table of lstlistings
 \listoffigures % Include listing of figures
+\listoftables
 
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
@@ -87,6 +88,24 @@
 \section{Algorithms} % Major section
 
 This section will describe the different problems and algorithms covered in the course.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c |}
+    \hline
+    Lab & Area & Comment \\
+    \hline \hline
+    Stable marriage & Matching & Gale-Shapely \\
+    Word ladders & Graph connection & Find connection between words $s$ and $t$ \\
+    Spanning USA & Greedy & Find the MST, Prim's or Kruskal's \\
+    Closest pair & Divide and conquer & Find the closest pair \\
+    Gorilla & Dynamic programming & String alignment \\
+    Railroad & Network flow & Find minimal cuts \\
+    \hline
+\end{tabular}
+\caption{Table of labs and their corresponding algorithm}
+\label{table: 1}
+\end{table}
 
 \subsection{Stable Marriage} % Sub-section
 Given two sets $X = {x_{1}, x_{2}, \dots x_{n}}$ and $Y = {y_{1}, y_{2}, \dots y_{n}}$ a matching $M$ is a set of pairs $(x_{i}, y_{j})$ such that an $x \in X$ and an $y \in Y$ appear in most one pair. Thus it follows that a matching does not let anybody have multiple partners.
@@ -262,7 +281,7 @@ return forest
 \end{lstlisting}
 
 \subsection{Divide and Conquer}
-Divide and conquer is the technique of dividing a hard problem to multiple easier problems and then solving those. Suppose we have a problem which can be solved in $O(n^2)$ time, if we divide this problem into two sub problems in linear time and save those problems and then combine the results in linear time the running time becomes $O(n \cdot log(n))$. Some examples include Merge sort, calculation of Fibonacci numbers or finding the largest perfect sub tree in a binary search tree.
+Divide and conquer is the technique of dividing a hard problem to multiple easier problems and then solving those. Suppose we have a problem which can be solved in $O(n^2)$ time, if we divide this problem into two sub-problems in linear time and save those problems and then combine the results in linear time the running time becomes $O(n \cdot log(n))$. Some examples include Merge sort, calculation of Fibonacci numbers or finding the largest perfect sub-tree in a binary search tree.
 
 \begin{lstlisting}[language=Python, caption=Fibbonaci in Python]
 #find the n:th number in the Fibonacci sequence.
@@ -272,7 +291,7 @@ def fibonacci(number n):
     else:
         return 1
 \end{lstlisting}
-\begin{lstlisting}[language=Python, caption=Perfect sub tree in BST]
+\begin{lstlisting}[language=Python, caption=Perfect sub-tree in BST]
 def func(node n):
     if(n!=None):
         tuple = (func(n.left),func(n.right))
@@ -284,9 +303,9 @@ def func(node n):
 \end{lstlisting}
 
 \subsection{Dynamic programming} % Sub-section
-Dynamic programming is closely related to divide and conquer but with some crucial differences. In divide and conquer we solve \textbf{independent} sub problems but in Dynamic programming we solve \textbf{overlapping} sub problems. The idea is to avoid computing already computed sub problems, but rather to store the already computed sub problems and access that when the same problems comes up again. This technique of storing the solutions is called \textit{Memoization}.
+Dynamic programming is closely related to divide and conquer but with some crucial differences. In divide and conquer we solve \textbf{independent} sub-problems but in Dynamic programming we solve \textbf{overlapping} sub-problems. The idea is to avoid computing already computed sub-problems, but rather to store the already computed sub-problems and access that when the same problems comes up again. This technique of storing the solutions is called \textbf{Memoization}. Furthermore we can categorize this problem solving method into two categories, the \textbf{top-down} and \textbf{bottom-up} approaches. Top-down is when one would start with a large problem and recursively using the smaller sub-problems to solve the problem at hand. Bottom-up on the other hand would solve the sub-problems first and use their solutions to build-on and arrive at solutions to bigger sub-problems.
 
-\par Dynamic programming is often used to optimize problems as it uses the already computed sub problems and combines them to give the best solution for the problem. Which, in contrast to a Greedy algorithm which picks the locally optimal choice at each step does not guarantee an optimal solution but is often fast to calculate.
+\par Dynamic programming is often used to optimize problems as it uses the already computed sub-problems and combines them to give the best solution for the problem. Which, in contrast to a Greedy algorithm which picks the locally optimal choice at each step does not guarantee an optimal solution but is often fast to calculate.
 
 \par The Fibonacci example can be improved upon as the memory cost of large n for a recursive solution is large. With dynamic programming we can reduce this to $O(n)$ time complexity and space, this is because we remember each solution in for example an array. The Array can then be used to calculate the next numbers.
 
@@ -300,6 +319,52 @@ def fibonacci(n):
 
     return array
 \end{lstlisting}
+
+\subsubsection{The OPT function}
+The OPT function represents the optimal solution to any sub-problem of the current problem. When constructing these one should consider the different parts that makes the solution. For the Fibonacci problem above we would consider the function fibbonacci as the OPT function for any given $n$. Constructing the OPT function for this problem is rather trivial. 
+
+\par First consider the OPT functions arguments, it only takes one argument therefore we would start with $OPT(i)$. Next consider what sub-problems the function uses to calculate the solution for any given $i$, we want the two solutions to the sub-problems for $i - 1$ and $i - 2$. As such the OPT function would need the values of $OPT(i - 1)$ and $OPT(i - 2)$. Hence we can construct the OPT function as such:
+
+\[ OPT(i) = OPT(i - 1) + OPT(i - 2) \]
+
+\par Let's step it up a notch. Let's try to define the OPT function of the subset sum problem, a variant of the knapsack problem. The problem asks: \textit{How do one bring as much hand luggage as possible on a flight?} Some definitions; you want to maximize the total amount of luggage, $T$, you are allowed to bring at most $W$ kilograms of hand luggage, you have $n$ items and each item $i$ has a weight $w_{i}$. Note that in the knapsack problem each item has both a value and a weight but we have that $value = weight$. We are to select a subset $S$ such that:
+
+\[ T = \sum_{i \in S} w_{i} \leq W; \quad \textrm{maximize}\ T \]
+
+\par Consider an optimal solution, which can choose from $n$ items for an allowable weight $W$. Either we include $n$ or we don't, either because $W_{n} > W$, where $w_{n}$ is the current weight, or it is better to skip it. From this we can draw the conclusion that the OPT function of this problem has to consider both the items $n$ and the maximum-weight $W$, we start with:
+
+\[ OPT(n, W) \]
+
+Then we realise that we will have different solutions depending on what the input is, naturally. The first to consider is if $n = 0$, we would in this case give the solution $0$ as we cannot add any more weight as we have no items left. We now have:
+
+\[ OPT(n, W) = 0 \quad \textrm{if}\ n = 0\]
+
+But now consider the situation where we have items left but $w_{n} > W$. in this case we want to return the solution for the sub-problem if we didn't choose this item, that is $OPT(n - 1, W)$. We now have:
+
+\[
+    OPT(n, W) = \left\{
+        \begin{array}{ll}
+            0, & n = 0 \\
+            OPT(n - 1, W), & w_{n} > W
+        \end{array}
+    \right\}
+\]
+
+We're not quite finished yet, now comes the last piece of the puzzle; what if we want to bring the item? Now we must consider a couple of things. Specifically, is it better to add this item or to skip it and add the next item in the list? We must now choose the maximum of these two alternatives. That is we should compare $OPT(n - 1, W)$ and $w_{n} + OPT(n - 1, W - w_{i})$. Note here that in the second term we add the accumulated weight $w_{n}$ to the value of the sub-problem $OPT(n - 1, W - w_{i})$ where we removed both the item and as we added this item, the weight of $n$. We now combine this with our previous function to get:
+
+\[
+    OPT(n, W) = \left\{
+        \begin{array}{ll}
+            0, & n = 0 \\
+            OPT(n - 1, W), & w_{n} > W \\
+            max(OPT(n - 1, W), w_{n} + OPT(n - 1, W - w_{i})) & \textit{otherwise}
+        \end{array}
+    \right\}
+\]
+\begin{center}
+\textit{Et viola!}
+\end{center}
+We have now created the OPT function for this problem and can proceed to implement it. Note that this solution will not run in polynomial time and that it is dependent on $W$. 
 
 \subsection{Network flow} % Sub-sub-section
 Network flow problems are similar to Graph problems, but in network flow problems every edge has a weight or rather a capacity. There exists a source node $s$ with no predecessor and a sink node $t$ with no successor.
@@ -326,7 +391,7 @@ Network flow problems are similar to Graph problems, but in network flow problem
 \subsubsection{Ford-Fulkeson algorithm}
 The Ford-Fulkeson is a greedy algorithm that solves the \textbf{max-flow min-cut} problem. The main principle is to push as much flow up all edges until they are at their maximum. It terminates when no more flow can be pushed. If a BFS is used to search the graph it is called Edmonds-Karp's algorithm.
 
-\par The running time of the Ford-Fulkeson algorithm is $O(C \cdot m)$ where $C$ is the total capacity of all edges and $m$ is the number of edges. This can be improved upon with the fundamentally different \textbf{Preflow-Push} algorithm. This algorithm ignores the conservation constraint and instead creates a preflow which is modified until it becomes the maximum flow.
+\par The running time of the Ford-Fulkeson algorithm is $O(C \cdot m)$ where $C$ is the complexity of the search algorithm and $m$ is the number of edges. This can be improved upon with the fundamentally different \textbf{Preflow-Push} algorithm. This algorithm ignores the conservation constraint and instead creates a preflow which is modified until it becomes the maximum flow.
 
 \begin{lstlisting}[language=Python, caption=Edmonds-Karp in Python]
 # Returns the maximum flow from s to t in the given graph
@@ -435,10 +500,10 @@ def pushRelabel(graph: Graph, source: Int, sink: Int): Graph = {
 \subsubsection{Special cases}
 
 \paragraph{Maximum Edge-disjointed path}
-Given a directed Graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{edge-disjoint}, two paths that do not have two internal edges in common, paths from $s$ to $t$. This can be done by setting all capacities in the network except edges connected to either $s$ or $t$ to one.
+Given a directed Graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{edge-disjoint}, that is two paths that do not have two internal edges in common, paths from $s$ to $t$. This can be done by setting all capacities in the network except edges connected to either $s$ or $t$ to one.
 
 \paragraph{Node independent path}
-Given the directed graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{vertex-independent} paths from $s$ to $t$. Again two paths are independent if they do not have two internal vertices in common, excluding $s$ and $t$
+Given the directed graph $G(V, E)$ and two vertices $s$ and $t$ we want to find the maximum number of \textbf{vertex-independent} paths from $s$ to $t$. Again two paths are independent if they do not have two internal vertices in common, excluding $s$ and $t$. This is used to solve problems that require that each node is only able to be visited $x$ times. By splitting each node into two nodes and adding a capacity of one to the new edge we can guarantee that no node of the original graph is visited more than once as the ''internal'' capacity would be at it's maximum after the first pass.
 
 \section{Complexity}
 This section will cover notations and hardness of problems in this course.
@@ -498,8 +563,16 @@ Is the problem of satisfying a given boolean formula, that is whether or not the
 \paragraph{Set cover}
 Given a set of elements $S = {e_{1}, e_{2}, \dots, e_{n}}$ also called \textit{the universe} and a collection $M$ of sets $m$ whose union is equal to the universe. The problem is to find the smallest sub-collection of $M$ whose union equals the universe. Imagine boxes of LEGO with different pieces in them, $M$, how many boxes do i have to pick to build my desired LEGO ship?
 
+\paragraph{Set Packing}
+Given a finite set $S$ and a list of subsets of $S$. Then the set packing problem asks if some $k$ subsets in the list are \textbf{pairwise disjoint}. That is, no two of them share an element. 
+
 \paragraph{3-dimentional matching}
 This is a generalization of bipartite matching, 2-dimentional matching, to 3-dimentional hypergraphs.
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{3dim}}
+\caption{Example 3 dim matching.}
+\label{3dim}
+\end{figure} 
 
 \paragraph{Vertex cover}
 Given a graph $G = (V, E)$ then set $S \subseteq V$ such that for every edge $(u, v) \in E$ we have ${u, v} \subseteq S$. That is, every edge $e \in E$ has at least one end in $S$. $S$ is called a \textbf{Vertex Cover}.
@@ -538,7 +611,5 @@ Strategy for reduction:
 \end{itemize}
 
 \paragraph{Reducing a problem}
-If $Y \leq_{p} X$  then we can say that $Y$ is easy or that $X$ is hard. Hence to reduce a problem, if we can show that our problem is at least as hard as a known problem we can figure out how hard our problem is.
-
-\par  So if you can reduce your problem to a NP-complete problem, you either have a NP-complete or NP-hard problem.
+If $Y \leq_{p} X$  then we can say that $Y$ is easy or that $X$ is hard. Hence to reduce a problem, if we can show that our problem is at least as hard as a known problem we can figure out how hard our problem is. So if you can reduce your problem to a NP-complete problem, you either have a NP-complete or NP-hard problem.
 \end{document}
