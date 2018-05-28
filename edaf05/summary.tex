@@ -162,7 +162,7 @@ A graph is a set of nodes $V$ and a set of edges $E$. Edges connects nodes toget
 A bipartite graph is a graph that can be coloured with two colours such that every edge connects two nodes with different colours.
 
 \begin{figure}[H]
-\center{\includegraphics[width=0.5\linewidth]{bipartite}}
+\center{\includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{bipartite}}
 \caption{Example bipartite graph.}
 \label{exBiGraph}
 \end{figure}
@@ -378,7 +378,7 @@ Network flow problems are similar to Graph problems, but in network flow problem
 \paragraph{Terminology}
 \begin{itemize}
     \item \textbf{cut}: is a partition $(A, B)$ with $s \in A$ and $t \in B$
-    \item \textbf{capacity} of a cut: $cap(A, B) = \sum_{e out from A} c(e)$
+    \item \textbf{capacity} of a cut: $cap(A, B) = \sum_{e \, out \, from\, A} c(e)$
     \item \textbf{min-cut problem}: to find a cut of minimum capacity
     \item \textbf{flow} a function of how much of the capacity is used
     \item \textbf{capacity constraint} for each $e \in E, 0 \leq f(e) \leq c(e)$, an edge cannot have more flow than it's capacity
@@ -568,9 +568,10 @@ Given a finite set $S$ and a list of subsets of $S$. Then the set packing proble
 
 \paragraph{3-dimentional matching}
 This is a generalization of bipartite matching, 2-dimentional matching, to 3-dimentional hypergraphs.
+
 \begin{figure}[H]
-\center{\includegraphics[width=0.5\linewidth]{3dim}}
-\caption{Example 3 dim matching.}
+\center{\includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{3dim}}
+\caption{Example 3-dim matching.}
 \label{3dim}
 \end{figure} 
 
