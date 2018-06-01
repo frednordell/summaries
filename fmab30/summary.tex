@@ -5,7 +5,8 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
-
+\usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
 \linespread{1.2} % Line spacing
@@ -82,66 +83,161 @@
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
 
-\section{Introduction} % Major section
+\section{Grundläggande begrepp} % Major section
 
-Content 
+\subsection{Mängder och tallinjen}
+Vi börjar med notationer och begrep från mängdläran och går snabbt in på tallinjen.
 
-\subsection{Subsection 1} % Sub-section
-Some more content
+\subsubsection{Mängder}
+En mängd beskrivs ofta med \textit{mängdklamrar}, dvs mängden med elementen 3, 4, 7 skrivs $M = {3, 4, 7}$. Beteckningen $\in$ betyder tillhör, samt $\subseteq$ som betyder \textbf{delmängd}. dvs. $7 \in {3, 4, 7}$ och ${3, 4} \subseteq {3, 4, 7}$. Detta används ofta för att beskriva egenskaper av elementen, t.ex. blir ${x \in \mathbb{Z} ; x > 0}$ alla \textit{positiva} heltal.
 
-\subsection{Subsection 2} % Sub-section
+\par Vidare betcknas \textbf{unionen}, dvs alla elemment som tillhör antingen en av mängderna $A$ och $B$, såsom följande $A \cup B$. Liknande för \textbf{snittet}, dvs alla element som ligger i \textit{både} $A$ och $B$, $A \cap B$. Vidare betecknas \textbf{differensen}, alla element som tillhör $A$ men inte $B$, $A \backslash B$
 
-Some more content
+\par Har $A$ och $B$ inga gemensamma element kallas de \textbf{disjunktiva}, $A \cap B = \emptyset$. Där $\emptyset$ är den \textbf{tomma mängden}. \textbf{komplementet} till $A$, alla element som inte tillhör $A$ betecknas $\complement A$. t.ex. $\complement A = \mathbb{R}^2 \backslash A$
 
-\begin{figure}[H] % Example image
-\center{\includegraphics[width=0.5\linewidth]{placeholder}}
-\caption{Example image.}
-\label{fig:speciation}
-\end{figure}
+\subsubsection{Tallinjen och absolutbelopp}
+Varje reellt tal $a$ kan identifieras med en \textit{punkt} på \textbf{tallinjen}. Därför betecknas den ofta $\mathbb{R}$, samma som för mängden av alla reella tal, punkten som mostvarar 0 kallas \textit{origo}. För ett reellt tal $a$ beteckar vi avståndet till origo med $| a |$, detta kallas \textbf{absolutbeloppet}, absolutbeloppet är som bekant positivt just på grund av denna egenskap av att det är ett \textit{avstånd}.
 
-\section{Content Section} % Major section
+\par Nedan följer ett par räknelagar, olikheten kallas ofta \textit{triangelolikheten}.
 
-Some more content
+\[
+|ab| = |a||b|, \quad | \dfrac{a}{b} | = \dfrac{|a|}{|b|}, \quad |a + b| \leq |a| + |b|
+\]
 
-\subsection{Subsection 1} % Sub-section
 
-Some more content
+\subsubsection{Intervall och omgivning}
+Med ett \textbf{intervall} menas ett sammanhängande avsnitt av talllinjen t.ex.
 
-\subsubsection{Subsubsection 2} % Sub-sub-section
+\begin{align*}
+    [-4, 3] &= {x \in \mathbb{R} ; -4 \leq x \leq 3}, & ]-4, 3[ &= {x \in \mathbb{R} ; -4 < x < 3}, \\
+    [3, 4] &= {x \in \mathbb{R} ; 3 \leq x < 4}, & [-4, \infty [ &= {x \in \mathbb{R} ; 4 \leq x}
+\end{align*}
 
-Some more content
+De tre första är \textbf{begränsade}, det sista \textbf{obegränsat}. Intervallet $[-4, 3]$ är slutet eftersom det innehåller båda sina ändpunkter, medan $]-4, 3[$ är öppet då ddet inte innehåller någon. Även $[4, \infty[$ är slutet då den innehåller sin enda ändpunkt. $[3, 4[$ är varken slutet eller öppet. Ä ett intervall sluete och begränsat kallas det kompakt.
 
-\begin{lstlisting}[language=Python]
-import numpy as np
- 
-def incmatrix(genl1,genl2):
-    m = len(genl1)
-    n = len(genl2)
-    M = None #to become the incidence matrix
-    VT = np.zeros((n*m,1), int)  #dummy variable
- 
-    #compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2),1) 
- 
-    for i in range(m-1):
-        for j in range(i+1, m):
-            [r,c] = np.where(M2 == M1[i,j])
-            for k in range(len(r)):
-                VT[(i)*n + r[k]] = 1;
-                VT[(i)*n + c[k]] = 1;
-                VT[(j)*n + r[k]] = 1;
-                VT[(j)*n + c[k]] = 1;
- 
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
- 
-                VT = np.zeros((n*m,1), int)
- 
-    return M
-\end{lstlisting}
+\par En \textbf{omgivning} är ett symetriskt öppet intervall runt en punkt $a$
+
+\subsection{Planet och rummet} % Sub-section
+Avstånd i rummet används Pythagoras sats. Vi kan tolka resultatet som längden av en vektor $u = (a, b)$.
+
+\[
+    |(a, b)| = \sqrt{a^2 + b^2}
+\]
+
+Avståndet mellan två punket kan ges på samma sätt:
+
+\[
+    |(a_{2}, b_{2}) - (a_{1}, b_{1})| = \sqrt{(a_{2}, a_{1})^2 + (b_{2}, b_{1})^2}
+\]
+
+Vi ser också att, samt ser att avstånd mellan två punkter kan beränkas på samma sätt som tidigare.
+
+\[
+    |(a, b, c)| = \sqrt{a^2 + b^2 + c^2}
+\]
+\subsection{Begrepp och metoder från linjär algera} % Sub-section
+
+\subsubsection{Vektorer och definitioner}
+\begin{itemize}
+    \item Normering av en vektor ger en vektor av längden 1, detta genom $v = \dfrac{1}{|u|} \cdot v$.
+    \item Vektorer är parralella om $u = \lambda v$
+    \item Två vektorer är ljnjärt beroende om den ena är en linjärkombination av den andra
+    \item Skalärprodukten defineras som $u \cdot v = |u||v|cos(\theta)$
+    \item dessutom $(a_{1}, a_{2}) \cdot (b_{1}, b_{2}) = a_{1}b_{1} + a_{2}b_{2}$
+    \item Om $u \cdot v = 0$ är de ortogonala
+    \item projektionsformeln: $u' = \dfrac{u \cdot v}{|v|^2}v$
+    \item vektorprodukten: $|u \times v| = |u||v|sin(\theta)$
+\end{itemize}
+
+\subsubsection{Linjer}
+
+
+\section{Differentialkalkyl} % Major section
+
+\subsection{Lokala extrempukter och stationära punkter} % Sub-section
+
+För att bestämma lokala extrempunkter löser man ekavtionssystemet:
+\[
+    \begin{cases}
+        f_{x}' = 0 \\
+        f_{y}' = 0
+    \end{cases}
+\]
+
+Vi vet att en lokal extrempunkt är stationär men det är inte nödvändigtvis tvärtom. För att se till detta används taylorutveckling, men det är inte det intresanta. Det man får på köpet är den \textbf{kvadratiska formen} av $f$ i en punkt $(a,b)$, den betecknas
+
+\[
+    Q(h,k) = f_{xx}'' (a,b) h^2 + 2 f_{xy}''(a,b) hk + f_{yy}'' (a,b) k^2
+\]
+
+Man kan dra vissa slutsatser om hur den kvadratiska formen beter sig, lite som teckenstudie i endimensionellanalys.
+
+\begin{itemize}
+    \item \textbf{Positivt definit} -- om $Q(h,k) > 0$ för alla $(h,k) \neq 0$, f har lokalt minimum
+    \item \textbf{Negativt definit} -- om $Q(h,k) < 0$ för alla $(h,k) \neq 0$, f har lokalt maximum
+    \item \textbf{Indefinit} -- om $Q(h,k)$ antar både negativa och positiva värden, sadelpunkt
+    \item \textbf{Positivt semidefinit} -- om $Q(h,k) \geq 0$ men $Q(h,k) = 0$ för något $(h,k) \neq 0$, ingen slutsats
+    \item \textbf{Negativt semidefinit} -- om $Q(h,k) \leq 0$ men $Q(h,k) = 0$ för något $(h,k) \neq 0$, ingen slutsats
+\end{itemize}
+
+\subsubsection{Största och minsta värde}
+
+För att hitta största och minsta värde i ett område så undersöker vi de punkter som framtagits enligt ovan, dessutom vill vi undersöka randen. Exempel följer:
+
+\par Bestäm största och minsta värde av $f(x,y) = 3x^2 + y^3 + -3xy^2$ på området som defineras av olikheterna $0 \leq y \leq x \leq 2$
+
+\par Vi har de sationära punkterna $(0,0)$ och $(\dfrac{1}{2},1)$ som framtagits enligt ovan. Sedan parameteriserar vi randen:
+
+\begin{itemize}
+    \item \textbf{A} : $y = 0$, $0 \leq x \leq 2$. Vi får $f(x, 0) = 3x^2 = g_{1}(x)$ och $g_{1}' = 6x \Leftrightarrow x = 0$ vilket svarar mot hörnet $(0,0)$ 
+    \item \textbf{B} : $x = 2$, $0 \leq y \leq 2$. Vi får $f(2, y) = 12 + y^3 -6y^2 = g_{2}(x)$ och $g_{2}' = 3y^2 -12y =3y(y-4) = 0$ lösningen $y=0$ svarar mot hörnet $(2,0)$, och y=4 ligger utanför vårat intervall.
+    \item \textbf{C} : $y = x$, $0 \leq x \leq 2$. Vi får $f(x, x) = 3x^2 - 2x^3 = g_{3}(x)$ och $g_{3}' = 6x -6x^2 = 6x(1-x) = 0$ Lösningen $x = 0$ svarar mot hörnet $(0,0)$, och $x = 1$ ger värdet $g_{3}' = 1$
+\end{itemize}
+Vi beräknar nu värdena i hörnen:
+
+\[
+    f(0,0) = 0, \quad f(2,0) = 12, \quad f(2,2) = -4
+\]
+
+Efter en jämförelse får vi då största värde 12 och minsta värde -4.
+
+\subsection{Riktningsderrivata}
+
+Riktningsderrivata är en derrivata från en punkt i riktningen av en vektor, som ofta fås från punkten och en annan punkt.
+Rikningsderrivate ränkas enkelt ut med följande formel:
+
+\[
+    f_{v}' (a,b) = grad\, f(a,b) \cdot v
+\]
+Där $f$ är funktionen, $(a,b)$ är punkten som riktningsderrivatan utgår från och $v$ är riktningsvektorn. $grad\, f$ betyder \textit{gradienten} av $f$, detta får genom:
+
+\[
+    grad\, f(a,b) = (f_{x}'(a,b), f_{y}'(a,b))
+\]
+
+
+\subsection{Differentialekvationer med partiell derrivata}
+
+Proceduren är att uttveckla de partiella derrivatorna med hjälp av kedjeregeln och sedan variablelbyta in partialderrivatorna för $u$ och $v$ i det uttrycket. Sedan ersätter man i orginalevkationen för att slutligen få ett uttryck för partialderrivatan för $f$ mot t.ex. $u$ eller $v$. Sedan integrerar vi detta och fårdå ett utryck för $f$ med $g$ som funktion av variabel. Slutligen använder vi villkoret som ges i upgiften för att räkna ut $g$ och få ett komplett uttryck för $f$ genom substition tillbaka till $x$ och $y$ från $u$ och $v$
+
+\section{Integraler} % Sub-sub-section
+
+\subsection{Beräkning av dubelintegral}
+
+Beräkning av dubbelintegraler är egenteligen bara en övning i att flytta runt saker tills man får enklare saker att räkna ut. Tricket är att dela upp dubbelintegralen över området till två enkenintegraler. 
+
+\subsubsection{Integrering över rektangel}
+Antag att funktionen $f$ är integrerbar på rektangeln
+
+\[
+    D = {(x,y); a \leq x \leq b, c \leq y \leq d}
+\]
+
+Då gäller det att 
+
+\[
+    \iint_D f(x,y) dx dy = \int_{c}^{d} \bigg( \int_{a}^{b} f(x,y)dx \bigg)dy = \int_{a}^{b} \bigg(\int_{c}^{d} f(x,y)dy \bigg)dx
+\] 
 
 
 \begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
