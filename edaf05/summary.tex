@@ -180,7 +180,7 @@ def DFS(G,v):
             recursively call DFS(G,w)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python, caption=BFS in Python]
+\begin{lstlisting}[language=Python, caption=BFS in Python/pseudo]
 def BFS(G,v,target):
     create empty set Visited
     Q = new Stack()
@@ -291,7 +291,7 @@ def fibonacci(number n):
     else:
         return 1
 \end{lstlisting}
-\begin{lstlisting}[language=Python, caption=Perfect sub-tree in BST]
+\begin{lstlisting}[language=Python, caption=Perfect sub-tree in BST in Python]
 def func(node n):
     if(n!=None):
         tuple = (func(n.left),func(n.right))
@@ -305,7 +305,7 @@ def func(node n):
 \subsection{Dynamic programming} % Sub-section
 Dynamic programming is closely related to divide and conquer but with some crucial differences. In divide and conquer we solve \textbf{independent} sub-problems but in Dynamic programming we solve \textbf{overlapping} sub-problems. The idea is to avoid computing already computed sub-problems, but rather to store the already computed sub-problems and access that when the same problems comes up again. This technique of storing the solutions is called \textbf{Memoization}. Furthermore we can categorize this problem solving method into two categories, the \textbf{top-down} and \textbf{bottom-up} approaches. Top-down is when one would start with a large problem and recursively using the smaller sub-problems to solve the problem at hand. Bottom-up on the other hand would solve the sub-problems first and use their solutions to build-on and arrive at solutions to bigger sub-problems.
 
-\par Dynamic programming is often used to optimize problems as it uses the already computed sub-problems and combines them to give the best solution for the problem. Which, in contrast to a Greedy algorithm which picks the locally optimal choice at each step does not guarantee an optimal solution but is often fast to calculate.
+\par Dynamic programming is often used to optimize problems as it uses the already computed sub-problems and combines them to give the best solution for the problem. Which, in contrast to a Greedy algorithm which picks the locally optimal choice at each step does not guarantee an optimal solution but is often fast to calculate. Hallmarks of a dynamic programming problem is restriction of movement, chess for example, or that once a move is made one cannot turn back.
 
 \par The Fibonacci example can be improved upon as the memory cost of large n for a recursive solution is large. With dynamic programming we can reduce this to $O(n)$ time complexity and space, this is because we remember each solution in for example an array. The Array can then be used to calculate the next numbers.
 
@@ -388,10 +388,10 @@ Network flow problems are similar to Graph problems, but in network flow problem
 
 \par The \textbf{max-flow min-cut} theorem states that in the flow network you can calculate the maximum flow from $s$ to $t$ using the weight of the \textbf{minimum cuts}. That is, the weight of the edges that if removed would disconnect the source from the sink adds up to the maximum flow from $s$ to $t$.
 
-\subsubsection{Ford-Fulkeson algorithm}
-The Ford-Fulkeson is a greedy algorithm that solves the \textbf{max-flow min-cut} problem. The main principle is to push as much flow up all edges until they are at their maximum. It terminates when no more flow can be pushed. If a BFS is used to search the graph it is called Edmonds-Karp's algorithm.
+\subsubsection{Ford-Fulkeson method}
+The Ford-Fulkeson is a greedy algorithm that solves the \textbf{max-flow min-cut} problem. The main principle is to push as much flow up all edges until they are at their maximum. It terminates when no more flow can be pushed. If a BFS is used to search the graph it is called Edmonds-Karp's algorithm that has complexity $O(V^2 \cdot E)$
 
-\par The running time of the Ford-Fulkeson algorithm is $O(C \cdot m)$ where $C$ is the complexity of the search algorithm and $m$ is the number of edges. This can be improved upon with the fundamentally different \textbf{Preflow-Push} algorithm. This algorithm ignores the conservation constraint and instead creates a preflow which is modified until it becomes the maximum flow.
+\par The running time of the Ford-Fulkeson algorithm is $O(E \cdot f)$ where $f$ is the maximum flow and $E$ is the number of edges because each augmenting path can be found in $O(E)$ time and increases the flow by an integer of at least 1, with the upper bound $f$. This can be improved upon with the fundamentally different \textbf{Preflow-Push} algorithm. This algorithm ignores the conservation constraint and instead creates a preflow which is modified until it becomes the maximum flow.
 
 \begin{lstlisting}[language=Python, caption=Edmonds-Karp in Python]
 # Returns the maximum flow from s to t in the given graph
@@ -508,21 +508,36 @@ Given the directed graph $G(V, E)$ and two vertices $s$ and $t$ we want to find 
 \section{Complexity}
 This section will cover notations and hardness of problems in this course.
 
-\subsection{Big O notation}
-Big O is a way to describe how algorithms grow as their input size grows, this can be applied to both running time and space requirement. When analysing algorithms you analyse how many times the different operations are run and find the dominating term. This way when the size of $n$ grows we can compare algorithms efficiency. If the algorithm is run in some complexity then all larger complexities is also applicable. Below is a list of the most common complexities in order.
+\subsection{$O$, \Omega and \Theta}
+We want to express hte growth rate of running times and other functions in a way that is insensitive ti constant factors and low-order terms. In ontehr words, we'd like to be able to take a running time like $1.62n^2 + 3.5n + 8$ and say that it grows like $n^2$ up to constant factors. 
 
-\begin{enumerate}
-    \item $O(1)$
-    \item $O(log(n))$
-    \item $O(n)$
-    \item $O(n \cdot log(n))$
-    \item $O(n^2)$
-    \item $O(2^n)$
-    \item $O(n!)$
-\end{enumerate}
+\subsubsection{$O$}
+Let $T(n)$ be a function, the worst-case runnig time of an algorithm for input $n$ for example. Given another function $f(n)$ we say that $T(n)$ is $O(f(n))$, read "$T(n)$ is order $f(n)$" if, for sufficently large $n$, the function $T(n)$ is bounded abouve by a constant multiple of $f(n)$. 
+$O$ is a way to describe how algorithms grow as their input size grows, this can be applied to both running time and space requirement. When analysing algorithms you analyse how many times the different operations are run and find the dominating term. This way when the size of $n$ grows we can compare algorithms efficiency. If the algorithm is run in some complexity then all larger complexities is also applicable. Below is a table of the most common complexities in order.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| c | c | c |}
+    \hline
+    Name & Complexity & Polyalgorithmic function \\
+    \hline \hline
+    Constant time & $O(1)$ & $-$ \\
+    Log-logarithmic time & $O(log log n)$ & $T(n) = T(\sqrt{n})$\\
+    Logarithmic time & $O(log(n))$ & $T(n) = T(\frac{n}{2})$ \\
+    Linear time & $O(n)$ & $T(n) = T(n - 1) + T(n + 1)$ \\
+    Quasilinear time & $O(n \cdot log(n))$ & $-$ \\
+    Quadratic time & $O(n^2)$ & $T(n) = n + T(n -1)$ \\
+    Exponential time & $O(2^n)$ & $-$ \\
+    Factorial time & $O(n!)$ & $-$\\
+    Example from lab & $O(2^{2^{n}})$ & $T(n) = (T(n-1))^2 \quad T(1) = 2$ \\
+    \hline
+\end{tabular}
+\caption{Table of complexities and their corresponding polynomial description}
+\label{table: 2}
+\end{table}
 
 \subsubsection{Memory complexity}
-Big O notation in relation to memory denotes how memory allocation grows when the input $n$ grows. If for example we store a matrix of vertices and edges the complexity would be $O(n \cdot m$. Commonly used in relation to dynamic programming.
+Big O notation in relation to memory denotes how memory allocation grows when the input $n$ grows. If for example we store a matrix of vertices and edges the complexity would be $O(n \cdot m)$. Commonly used in relation to dynamic programming.
 
 \subsection{P, NP, NP-Complete \& NP-hard}
 
@@ -613,4 +628,7 @@ Strategy for reduction:
 
 \paragraph{Reducing a problem}
 If $Y \leq_{p} X$  then we can say that $Y$ is easy or that $X$ is hard. Hence to reduce a problem, if we can show that our problem is at least as hard as a known problem we can figure out how hard our problem is. So if you can reduce your problem to a NP-complete problem, you either have a NP-complete or NP-hard problem.
+
+\par This is most commonly done by creating an instance of the NP-problem and with that instance create an instance of our problem. We can then conclude that if we have a solution to our problem that is also a solution to the NP-problem and hence our problem is equally as hard as the NP-problem.
+
 \end{document}
