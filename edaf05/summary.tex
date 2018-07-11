@@ -508,12 +508,16 @@ Given the directed graph $G(V, E)$ and two vertices $s$ and $t$ we want to find 
 \section{Complexity}
 This section will cover notations and hardness of problems in this course.
 
-\subsection{$O$, \Omega and \Theta}
+\subsection{$O$, $\Omega$ and $\Theta$}
 We want to express hte growth rate of running times and other functions in a way that is insensitive ti constant factors and low-order terms. In ontehr words, we'd like to be able to take a running time like $1.62n^2 + 3.5n + 8$ and say that it grows like $n^2$ up to constant factors. 
 
 \subsubsection{$O$}
-Let $T(n)$ be a function, the worst-case runnig time of an algorithm for input $n$ for example. Given another function $f(n)$ we say that $T(n)$ is $O(f(n))$, read "$T(n)$ is order $f(n)$" if, for sufficently large $n$, the function $T(n)$ is bounded abouve by a constant multiple of $f(n)$. 
-$O$ is a way to describe how algorithms grow as their input size grows, this can be applied to both running time and space requirement. When analysing algorithms you analyse how many times the different operations are run and find the dominating term. This way when the size of $n$ grows we can compare algorithms efficiency. If the algorithm is run in some complexity then all larger complexities is also applicable. Below is a table of the most common complexities in order.
+
+Let $T(n)$ be a function, the worst-case runnig time of an algorithm for input $n$ for example. Given another function $f(n)$ we say that $T(n)$ is $O(f(n))$, read "$T(n)$ is order $f(n)$" if, for sufficently large $n$, the function $T(n)$ is bounded abouve by a constant multiple of $f(n)$. This is the essece of $O$ notation, we say that $T(n)$ is \textit{asymptotically upperbounded by f}. Note that $O(\cdot)$ only expresses an upper bound and not the exact growth rate of the function.
+$O$ can be applied to both running time and space requirement and is a great tool to compare the efficency of algorithms. If the algorithm is run in some complexity then all larger complexities is also applicable.
+
+\paragraph{$O$ in realtion to memory}
+$O$ notation in relation to memory denotes how memory allocation grows when the input $n$ grows. If for example we store a matrix of vertices and edges the complexity would be $O(n \cdot m)$. Commonly used in relation to dynamic programming.
 
 \begin{table}[H]
 \centering
@@ -536,8 +540,12 @@ $O$ is a way to describe how algorithms grow as their input size grows, this can
 \label{table: 2}
 \end{table}
 
-\subsubsection{Memory complexity}
-Big O notation in relation to memory denotes how memory allocation grows when the input $n$ grows. If for example we store a matrix of vertices and edges the complexity would be $O(n \cdot m)$. Commonly used in relation to dynamic programming.
+\subsubsection{$\Omega$}
+Complementary there is a notation for \textit{asymptotically lower bound} of the function. Say that we have just proven that the worst-case running time $T(n)$ for a given algorithm is $O(n^2)$. We want to show that this upper bound is the best possible. To do this we want to express the notion that for arbitralily large input sizes of $n$, the function $T(n)$ is \textit{at least} a constant multiple of some specific function $f(n)$. (This happens to be $n^2$ in this case.) Thus, we say that $T(n)$ is $\Omega(f(n))$ if there exist constants $\epsilon > 0$ and $n_0 \geq 0$ so that for all $n \geq n_0$, we have $T(n) \geq \epsilon \cdot f(n)$. Analogous with $O(\cdot)$ notation. This works precisely as $O(\cdot)$ except we're bounding the function from below. Instead of inflating the terms until it looks like a constant times $n^2$, we now reduce the size until it looks like a constant times $n^2$.  
+
+\subsubsection{$\Theta$}
+
+If we can show that a function is both $O(f(n))$ and $\Omega(f(n))$ we have then found the "right" bound: $T(n)$ grows exactly like $f(n)$. If this is true we express this with $\Theta(f(n))$ and say that it is \textit{asymptotically tight bound} for $T(n)$
 
 \subsection{P, NP, NP-Complete \& NP-hard}
 
