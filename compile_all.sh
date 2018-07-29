@@ -1,13 +1,19 @@
-#! /bin/bash
+#! /bin/sh
+
+rm -rf compiled
+mkdir .compiled
 
 for D in */; do
 	echo  -e "Compiling ${D}	 \n--------------------------------\n"
+	cd "${D}"
 	if [ ! -d "out" ]; then
   		mkdir out
 	fi
 	pdflatex -interaction=batchmode -halt-on-error -output-directory ./out/ summary.tex
-	mv "${D}"out/summary.pdf out/"${D}.pdf"
+	cp out/summary.pdf ../.compiled/"${D%?}.pdf"
 	echo -e "\n"
+	cd ..
 done 
 
-read v1
+cp -r .compiled compiled
+rm -rf .compiled
