@@ -10,4 +10,4 @@ cache:
     - /tmp/texlive
     - $HOME/.texlive
 script:
-- ./compile_all.sh
+- bash ./compile_all.sh
