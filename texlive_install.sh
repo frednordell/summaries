@@ -15,15 +15,12 @@ if ! command -v texlua > /dev/null; then
   tar -xzf install-tl-unx.tar.gz
   cd install-tl-20*
 
-  # Find directory this file is in, to find the texlive.profile file.
-  BASEDIR=$(dirname "$BASH_SOURCE")
-  echo "$BASEDIR"
-
   # Install a minimal system
-  ./install-tl --profile=${BASEDIR}/texlive/texlive.profile
+  ./install-tl --profile=../texlive/texlive.profile
 
   cd ..
 fi
+
 
 # Just including texlua so the cache check above works
 # Needed for any use of texlua even if not testing LuaTeX
