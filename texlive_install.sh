@@ -20,7 +20,7 @@ if ! command -v texlua > /dev/null; then
   echo "$BASEDIR"
 
   # Install a minimal system
-  ./install-tl --profile=${BASEDIR}/texlive.profile
+  ./install-tl --profile=${BASEDIR}/texlive/texlive.profile
 
   cd ..
 fi
