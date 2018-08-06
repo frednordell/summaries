@@ -11,3 +11,5 @@ cache:
     - $HOME/.texlive
 script:
 - bash ./compile_all.sh
+# Compile twice to fix references
+- bash ./compile_all.sh
