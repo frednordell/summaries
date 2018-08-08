@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.com/frednordell/summaries.svg)](https://travis-ci.com/frednordell/summaries)
+[![Build Status](https://api.travis-ci.org/frednordell/summaries.svg?branch=master)](https://travis-ci.com/frednordell/summaries)
 
 # Contents
 Summaries of various courses from my time at LTH
