@@ -5,7 +5,6 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
-
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
 \linespread{1.2} % Line spacing
@@ -56,11 +55,11 @@
 \center % Center everything on the page
 
 \textsc{\LARGE Lund University, Faculty of Engineering}\\[1.5cm] % Name of your university/college
-\textsc{\Large COURSE CODE}\\[0.5cm] % Major heading such as course name
-\textsc{\large COURSE NAME}\\[0.5cm] % Minor heading such as course title
+\textsc{\Large EDAA40}\\[0.5cm] % Major heading such as course name
+\textsc{\large Discrete Strucures in Computer Science}\\[0.5cm] % Minor heading such as course title
 
 \HRule \\[1cm]
-{ \huge \bfseries Summary of COURSE CODE}\\[0.4cm] % Title of your document
+{ \huge \bfseries Summary of EDAA40}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
 
 \emph{Author:} Fred \textsc{Nordell} % Your name
@@ -82,16 +81,25 @@
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
 
-\section{Introduction} % Major section
+\section{Sets} % Major section
 
-Content 
+Sets are collections of stuff, any stuff. There is one special set, the empty set: $\{\} = \emptyset$. Given a set A, any ting x is either an element of A or it is not; $x \in A$ or $x \notin A$. To make this work we need a concept of equality, is $\{2,1\} \in \{\{1,2\},\{3,4\}\}$ ? 
 
-\subsection{Subsection 1} % Sub-section
-Some more content
+\subsection{Extensionallity}
+A set is defined by the elements it contains (its \textit{extension}). Order and repetition does not matter. $\{a,b,c\} = \{c,b,a\} = \{a,a,b,c,b\}$ Equal sets must contain \textit{exactly} the same elements $\{a,b,c\} \neq \{a,c,b,d\}$. Note that 1-element sets are \textit{singleton} sets: $\{a,b,c\} \neq \{\{a,b,c\}\}$ \& $\emptyset \neq \{\emptyset\}$ \& $11 \neq \{11\}$.
 
-\subsection{Subsection 2} % Sub-section
+\subsection{Cardinallity}
 
-Some more content
+The number of elements in a set $A$ is called its cardinallity. $\#(A)$ or $|A|$. Note that $\#(\emptyset) = 0$
+
+\subsection{Inclusion}
+If $A \subseteq B$ we call A a \textit{subset} of B and B the \textit{superset} of A. This means that if $x \in A$ then $x \in B$. A and B might be the same, in fact: $A \subseteq B$ and $B \subseteq A$ iff (if and only if) $A = B$. Furthermore, for any set A it is allways the case that $\emptyset \subseteq A$ and $A \subseteq A$. Note that $\subset$ is used to denote \textit{proper} inclusion: $A \subset B$ iff $A \subseteq B$ and $A \neq B$.
+
+\subsubsection{Properties of inclusion}
+Inclusion is \textit{transitive}: $A \subseteq B$ and $B \subseteq C$ implies $A \subseteq C$. Inclusion is also \textit{partial}: There are sets where neither $A \subseteq B$ or $B \subseteq A$ is true.
+
+\subsection{Specifying sets}
+
 
 \section{Content Section} % Major section
 
