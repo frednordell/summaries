@@ -13,7 +13,7 @@ script:
 before_deploy:
 - git config --local user.name "frednordell"
 - git config --local user.email "fred@nordells.nu"
-- git tag "$(date +'%Y%m%d')-$(git log --format=%h -1)"
+- git tag "$(date +'%Y-%m-%d')-$(git log --format=%h -1)"
 deploy:
   provider: releases
   file_glob: true
