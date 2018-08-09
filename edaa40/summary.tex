@@ -77,6 +77,9 @@
 %----------------------------------------------------------------------------------------
 
 \tableofcontents % Include a table of contents
+\lstlistoflistings % Include a table of lstlistings
+\listoffigures % Include listing of figures
+\listoftables
 
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
@@ -99,63 +102,37 @@ If $A \subseteq B$ we call A a \textit{subset} of B and B the \textit{superset} 
 Inclusion is \textit{transitive}: $A \subseteq B$ and $B \subseteq C$ implies $A \subseteq C$. Inclusion is also \textit{partial}: There are sets where neither $A \subseteq B$ or $B \subseteq A$ is true.
 
 \subsection{Specifying sets}
-There are a couple of ways to define sets,
+There are a couple of ways to define sets: enumeration, set builder and recursive defenition.
 
-\section{Content Section} % Major section
+\subsubsection{Enumeration}
+Simple, just list the elements: $A = \{2,3,4,5,7,11\}$
 
-Some more content
+\subsubsection{Builder notaion}
+Little more complicated: $B = \{x \in A: x \quad odd\} \rightarrow B = \{3,5,7,11\}$. This uses other sets to select different elements based on a condidtion. 
 
-\subsection{Subsection 1} % Sub-section
+\par Here we find \textit{Russel's paradox}, that is $R = \{x: x\notin x\}$ but does $R \in R$? Here $R$ isn't a well-defined set, $x$ can stand for anything, even things that aren't a set. Because of this we make sure that varibles are limited to elements of a set that is known to be well-defined. This form automatically implies a superset.
 
-Some more content
+\subsubsection{Recursive}
 
-\subsubsection{Subsubsection 2} % Sub-sub-section
+\subsection{Operations on sets}
+\subsubsection{Union}
+The union, $A \cup B$,of $A$ and $B$ is all elements that are in $A$ or $B$. That is: $x \in A \cup B$ iff $x \in A$ or $x \in B$
 
-Some more content
+\subsubsection{intersection}
+The intersection, $A \cap B$, of $A$ and $B$ is all elements that are both in $A$ and $B$. That is: $x \in A \cap B$ iff $x \in A$ and $x \in B$.
 
-\begin{lstlisting}[language=Python]
-import numpy as np
- 
-def incmatrix(genl1,genl2):
-    m = len(genl1)
-    n = len(genl2)
-    M = None #to become the incidence matrix
-    VT = np.zeros((n*m,1), int)  #dummy variable
- 
-    #compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2),1) 
- 
-    for i in range(m-1):
-        for j in range(i+1, m):
-            [r,c] = np.where(M2 == M1[i,j])
-            for k in range(len(r)):
-                VT[(i)*n + r[k]] = 1;
-                VT[(i)*n + c[k]] = 1;
-                VT[(j)*n + r[k]] = 1;
-                VT[(j)*n + c[k]] = 1;
- 
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
- 
-                VT = np.zeros((n*m,1), int)
- 
-    return M
-\end{lstlisting}
+\subsubsection{difference}
+The difference, $A \setminus B$, of $A$ and $B$ is all elements that are in $A$ and not in $B$. That is: $x \in A \setminus B$ iff $x \in A$ and $x \notin B$.
+
+\begin{figure}[H] % Example image
+\center{\includegraphics[width=0.5\linewidth]{operation.jpg}}
+\caption{Illustration of set operations}
+\label{operations}
+\end{figure}
+
+\subsection{Complement}
+There is no general \"inverse\" set $-A$ for the set $A$. However we often work in a \textit{local universe}, that is a set of everything we are potentionally interested in. Let's call it $U$. We can con give the complement of a set a meaning: $-A = U \setminus A$. Can also be written $A^- \quad A' \quad A^c$
 
 
-\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
-
-\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-\newblock Assortative pairing and life history strategy - a cross-cultural
-  study.
-\newblock {\em Human Nature}, 20:317--330.
- 
-\end{thebibliography}
-
-%----------------------------------------------------------------------------------------
 
 \end{document}
