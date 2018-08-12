@@ -124,15 +124,105 @@ The intersection, $A \cap B$, of $A$ and $B$ is all elements that are both in $A
 \subsubsection{difference}
 The difference, $A \setminus B$, of $A$ and $B$ is all elements that are in $A$ and not in $B$. That is: $x \in A \setminus B$ iff $x \in A$ and $x \notin B$.
 
-\begin{figure}[H] % Example image
+\begin{figure}[H]
 \center{\includegraphics[width=0.5\linewidth]{operation.jpg}}
 \caption{Illustration of set operations}
 \label{operations}
 \end{figure}
 
-\subsection{Complement}
+\subsubsection{Complement}
 There is no general \"inverse\" set $-A$ for the set $A$. However we often work in a \textit{local universe}, that is a set of everything we are potentionally interested in. Let's call it $U$. We can con give the complement of a set a meaning: $-A = U \setminus A$. Can also be written $A^- \quad A' \quad A^c$
 
+\subsection{Disjointness}
+Two sets are \textit{disjoint} if they do not share any common elements: $A \cap B = \emptyset$. All sets are disjoint from $\emptyset$, event the empty set. For multiple sets they are \textit{pairwise disjoint} if they are all disjoint.
+
+\subsection{Algebra}
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{algebra.png}}
+\caption{Illustration of set algebra}
+\label{set algebra}
+\end{figure}
+
+\subsection{Set families}
+
+A family of sets is a way of reffering to a set of sets, usually \textit{indexed} by an \textit{index set}. $\{A_i : i \in I\}$, where $A_i$ are sets, $i$ is the index and $I$ is the index set.
+
+\subsubsection{Generalized union and intersection}
+Let $S$ be a set of sets then $\bigcap S = \{x : x \in s$ for all $s \in S\}$ and $\bigcup S = \{ x : x \in s$ for at least one $s \in S\}$
+
+\subsection{Power sets}
+
+The \textit{power set} of a set A is the set of all its subsets. $\mathcal{P}(A) = \{s : s \subseteq A \} = 2^A$
+
+\begin{itemize}
+    \item $\mathcal{P}(\emptyset) = \emptyset$
+    \item $\mathcal{P}(\{a\}) = \{\emptyset, \{a\}\} $
+    \item $\mathcal{P}(\{a,b\}) = \{\emptyset, \{a\}, \{b\}, \{a,b\}\}$
+    \item $\mathcal{P}(\{a,b,c\}) = \{\emptyset, \{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}\}$
+    \item $\#(\mathcal{P}(A)) = 2^{\#(A)}$ 
+\end{itemize}
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{hasse.png}}
+\caption{Hasse diagram of powerset}
+\label{hasse diagram}
+\end{figure}
+
+\section{Relations}
+
+Mathematical relation are about connections between objects. It can be relations between numbers: a divides b, a is greater than etc. or it can be relations between sets: A is a subset of B, same size etc. or it can be between people: customer/client, parent/child.
+
+\subsection{Ordered pairs}
+An ordered pair is diffeent from an unordered pair wich we have seen before in that the flipped pair is not the same. $(a,b) = (x,y)$ iff $a = x$ and $b = y$, corollary: $(a,b) \neq (b,a)$ if $a \neq b$. N-tuples is this idea but with n number of elements in the tulple.
+
+\subsection{Cartesian product}
+The cartesian product of a pair of sets, or generally a finite family of sets, is the set of all ordered pais or n-tuples.
+\[
+    A_1 \times ... \times A_n = \{(a_1 , ...,a_n) : a_1 \in A_1, ..., a_n \in A_n\}
+\]
+If sets are the same we also write $A \times A = A^2$
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{cartesian.png}}
+\caption{Examples of cartesian product}
+\label{Cartesian product examples}
+\end{figure}
+
+\subsection{Relation and natural join}
+
+A (binary, dyadic) relation R from A to B, or over $A \times B$, is a subset of the cartesian product.
+
+\[
+    R \subseteq A \times B
+\]
+
+If A and B are the same i.e. $R \subseteq A \times A$ we call R a binary relation over A. For binary relations $R \subseteq A \times B$, these are equvalent: $(a,b) \in R$ and $aRb$. The $\bowtie$ operator is the \textit{natural join}, that gives the set of all combinations of tuples in the relations, $R \bowtie S$, taht are equal on their commn attribute names. It is important because it is the relational counterpart to the logical AND.
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{naturaljoin.png}}
+\caption{Examples of natural join}
+\label{Natural join example}
+\end{figure}
+
+\subsection{Source, target, domain, range}
+For binary relations $R \subseteq A \times B$: A is called the \textit{source} and B is called the \textit{target}. Note that source and target are not uniquely determined as:
+\[
+    Y \supseteq A \quad X \supseteq B
+\]
+
+\[
+    A \times B \subseteq X \times Y 
+\]
+
+\[
+    R \subseteq A \times B \subseteq X \times Y
+\]
+
+By contrast the \textit{domain}, $dom(R) = \{a : (a,b) \in R \ \textrm{for some } \ b\}$, and the \textit{range}, $range(R) = \{b : (a,b) \in R \ \textrm{for some} \ a\}$
+
+
+\subsection{Converse and complement}
 
 
 \end{document}
