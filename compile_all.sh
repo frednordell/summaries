@@ -15,5 +15,6 @@ for D in */; do
 	cd ..
 done 
 
+rm -rf texlive/out
 cp -r .compiled compiled
 rm -rf .compiled
