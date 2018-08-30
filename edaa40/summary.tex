@@ -4,6 +4,10 @@
 \usepackage{geometry} % Required to change the page size to A4
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
+\usepackage{amssymb}
+\def\R{\mathbb{R}}
+\def\N{\mathbb{N}}
+\usepackage{amsmath}
 \usepackage{graphicx} % Required for including pictures
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
@@ -253,6 +257,164 @@ Given two binary relations $R \subset A \times B$ and $S \subset B \times C$ the
 \center{\includegraphics[width=0.5\linewidth]{composition.png}}
 \caption{Composition visualised}
 \label{Composition visualised}
+\end{figure}
+
+\subsection{Image}
+
+Given a binary relation $R \subseteq A \times B$ from A to B, for any $a \in A$ its \textit{image under r}, written $R(a)$, is defined as: $R(a) = \{b \in B : aRb\}$. 
+
+\subsection{Reflexivity, transitivity, symmetry}
+
+\section{Functions}
+A function is a special case of a relation, the relation $f \subseteq A \times B$ is a function iff $dom(f) = A$ and $\#(f(a)) = 1$ for all $a \in A$. This is written $A \rightarrow B$
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{rvf.png}}
+\caption{Relations vs Functions}
+\label{Relations vs Functions}
+\end{figure}
+
+The set of all functions from A to B can be written as $\langle A \rightarrow B \rangle$ or $B^A$. So these are the same: $f: A \rightarrow B$, $f \in \rangle A \rightarrow B \langle$, $f \in B^A$
+
+\subsection{Mapping}
+In addition to domain and codomain, we need to describe the actual mapping defining the function. We use this arrow $\mapsto$ for this. $f: A \rightarrow B$ and $x \mapsto$ (something with $x$), here the first part denotes the domain and codomain and the second part describes what we actually do with the values in the domain.
+
+\subsubsection{functions of multiple arguments}
+Functions of multiple arguments are simply functions of Cartesian products:
+\[
+    add: \R \times \R \rightarrow \R
+\]
+\[
+    (x,y) \mapsto x + y
+\]
+
+But usually to simplify the parenthesis are removed 
+\[
+    add: \R \times \R \rightarrow \R
+\]
+\[
+    x,y \mapsto x + y
+\]
+
+This also applies to using a function, we write $add(5,7)$ instead of $add((5,7))$
+
+\subsection{Restriction}
+Given a function $f: A \to B$ its \textit{restriction} to a set $X \subseteq A$ is defined as $fx: X \to B$, $a \mapsto f(a)$, alternatively wirtten as $f | x$
+
+\subsection{Image}
+Given a function $f: A \to B$ and a set $X \subseteq A$, the image of $X$ under f is defined as: $f(X) = \{f(a): a \in X\}$
+
+\subsection{Injection, surjection, bijection}
+
+\paragraph{Injection} A function $f: A \to B$ is injective iff: $a \neq b$ implies $f(a) \neq f(b)$. Notation: $f: A \hookrightarrow B$.
+
+\paragraph{Surjective} A function $f: A \to B$ is surjective iff $f(A) = B$. Notation: $f: A \twoheadrightarrow B$
+
+\paragraph{Bijective} A function $f: A \to B$ is bijective iff it is both injective and surjective. Notation: $f: A \leftrightarrow B$
+
+\section{Proofs}
+A \textit{definition} is a statement that gives a precise meaning ti a term or a symbol. A \textit{theorem} is astatement that needs to be proven based on definitions (and axioms). A \textit{proof} is a chain of logical reasoning showing the truth of a theorem.
+
+\subsection{Kinds of proof}
+Proofs come in different forms, which one is used depends on the problem and what chain of reasoning is best suited. Many theorems are conditional statements, that is they have the form \"premise implies conclusion\" or $P \Rightarrow C$ e.g. if $x$ is odd, then $x^2$ is odd.
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | c | c | c |}
+      \hline
+      P & C &  $P \Rightarrow C$ \\
+      \hline
+      T & T & T \\
+      T & F & F \\
+      F & T & T \\
+      F & F & T \\
+      \hline
+    \end{tabular}
+\caption{Truthtable}
+\label{table: 1}
+\end{table}
+
+\subsubsection{Direct proof}
+
+\subsubsection{Contrapositive}
+
+In some cases it is easier to prove a theorem by supposing that the conclusion is false and then prove that the premise then also is false $\neg C \Rightarrow \neq P$
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | c | c | c |}
+      \hline
+      $\neg P$ & $\neg C$ &  $P \Rightarrow C$ \\
+      \hline
+      F & F & T \\
+      T & F & F \\
+      F & T & T \\
+      T & T & T \\
+      \hline
+    \end{tabular}
+\caption{Contrapositive truthtable}
+\label{table: 2}
+\end{table}
+
+\subsubsection{Proof by contradiction}
+
+Say we want to prove a proposition, not necessarialy in conditional form. Proof by contradiction uses the fact that if we cn show that $\neg P$ results in a logical contradiction, e.g. it implies some conclusion $C$ as well ass $\neg C$ then $\neg P$ cannot be true, hence $P$ must be true.
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | c | c | c | c | c |}
+      \hline
+      $P$ & $C$ &  $\neg P$ & $C \land \neg C$ & $\neg P \Rightarrow C \land \neg C$\\
+      \hline
+      T & T & F & F & T \\
+      T & F & F & F & T\\
+      F & T & T & F & F\\
+      F & F & T & F & F\\
+      \hline
+    \end{tabular}
+\caption{Contradictory truthtable}
+\label{table: 3}
+\end{table}
+
+\section{Induction and recursion}
+
+\subsection{Induction} Induction is the method of proving the properties of things.
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{induction.png}}
+\caption{An example of an induction proof}
+\label{Induction example}
+\end{figure}
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{generalised_induction.png}}
+\caption{Generalised induction proof}
+\label{Induction generalised}
+\end{figure}
+
+\subsection{Recursion} Recursion is used to define sets, and espessially functions. A simple recursive defenition follows.
+
+\[
+f(n) =
+    \begin{cases}
+        1 & \text{for } n = 0\\
+        n \cdot f(n - 1) & \text{otherwise}\\ 
+    \end{cases}
+\]
+This describes the following set: 
+
+\[
+    f= \{(0,1),(1,1),(2,2),(3,6),(4,24),(5,120),\ldots\}
+\]
+
+A culumative recursive definition reach back further than the last defined value, possibly to all defined values. THis can also be extended to the induction principle as we now assumed the truth for \textbf{all} smaller values, not just the pervious one.
+
+\section{Propositional logic}
+
+\begin{figure}[H]
+\center{\includegraphics[width=0.5\linewidth]{logic.png}}
+\caption{Basic logic functions}
+\label{Basic logic functions}
 \end{figure}
 
 
