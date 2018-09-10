@@ -5,7 +5,7 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
-
+\usepackage{amsmath}
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
 \linespread{1.2} % Line spacing
@@ -87,75 +87,219 @@
 
 \section{Introduction} % Major section
 
-Content 
+Man använder reglerteknik för att styra saker, t.ex. temeraturen i et rum. Det är ett sätt att moddelera hur saker ska göra, typ. Det är fett användbart, så lära sig är bra.
 
-\subsection{Subsection 1} % Sub-section
-Some more content
+\section{Regulering}
 
-\subsection{Subsection 2} % Sub-section
+\subsection{Den enkla reglerkretsen}
 
-Some more content
+Vi har en proces vi vill reglera: det vi mäter kallar vi $y$, mätsignal kallas också utsignal och ärvärde. Om vi vill kunna påverka har vi en pil in till $y$ som vi kallar $u$, styrsignal kallas också insignal. Innan $u$ sitter det vi kallar för regeluator, det är den som bestämmer, vad behöver den veta? 1. $r$ referensvärde eller börvärde, e.g. vilken temperatur vill vi ha. 2. $y$ mätsignalen, e.g. hur går det? 
 
-% \begin{figure}[H] % Example image
-% \center{\includegraphics[width=0.5\linewidth]{placeholder}}
-% \caption{Example image.}
-% \label{fig:speciation}
-% \end{figure}
+\subsection{On/off-regulatorn}
+Reglerfelet: $e = r -y$. En nackdel med on-off är 
 
-\section{Content Section} % Major section
+\[
+u =
+    \begin{cases}
+        u_{max} & \text{om } e \geq 0 \\
+        u_{min} & \text{om } e \leq 0 \\ 
+    \end{cases}
+\]
 
-Some more content
+\subsection{P-regulatorn}
+Ekvation: $P: u = u_0 + K \cdot e$
+\[
+u =
+    \begin{cases}
+        u_{max} & \text{om } e \geq 0 \\
+        u_0 + K \cdot e & -e_0 \leq e \leq e_0 \\
+        u_{min} & \text{om } e \leq 0 \\ 
+    \end{cases}
+\]
 
-\subsection{Subsection 1} % Sub-section
+K är regulatorns förstärkning. Problem, man får nästan alltid ett kvarstående reglerfel.
+Vad är reglerfelet? $u = u_0 + K \cdot e$, $u(t) = u_0 + K \cdot e(t)$ detta get felet: $e = \dfrac{u - u_{0}}{K}$
+Felet blir mindre om förstärkningen är större, men man svänger runt sitt önskade värde.
 
-Some more content
+\subsection{PI-regulatorn}
+$P: u = u_0 + K \cdot e$ men vad händer om vi reglerar $u$?
+\[
+    PI: u=\dfrac{K}{T_i}\int edt + k \cdot e = K(e + \dfrac{1}{T_i} \int edu)
+\]
 
-\subsubsection{Subsubsection 2} % Sub-sub-section
+\subsection{PID-regulator}
+PI-regulatorn har en begränsning: man måste kolla historiskt: ''vart är vi påväg?''
 
-Some more content
-
-\begin{lstlisting}[language=Python]
-import numpy as np
- 
-def incmatrix(genl1,genl2):
-    m = len(genl1)
-    n = len(genl2)
-    M = None #to become the incidence matrix
-    VT = np.zeros((n*m,1), int)  #dummy variable
- 
-    #compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2),1) 
- 
-    for i in range(m-1):
-        for j in range(i+1, m):
-            [r,c] = np.where(M2 == M1[i,j])
-            for k in range(len(r)):
-                VT[(i)*n + r[k]] = 1;
-                VT[(i)*n + c[k]] = 1;
-                VT[(j)*n + r[k]] = 1;
-                VT[(j)*n + c[k]] = 1;
- 
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
- 
-                VT = np.zeros((n*m,1), int)
- 
-    return M
-\end{lstlisting}
+\[
+    u(t) = K(e(t) + \dfrac{1}{T_i} \int e(t) dt + T_d \cdot \dfrac{de}{dt})
+\] 
+$T_d =$ regulatorns derrivatatid
 
 
-\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+\section{Föreläsning 2}
 
-\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-\newblock Assortative pairing and life history strategy - a cross-cultural
-  study.
-\newblock {\em Human Nature}, 20:317--330.
- 
-\end{thebibliography}
+JAG HATAR MITT LIV, VARFÖR FINNS ALKOHOL AAAAAHHHHHH
+
+Tillstånds beskrivning: 
+
+\[
+    \begin{cases}
+        x = Ax + Bu \\
+        y = Cx + Du \\
+    \end{cases}
+\]
+
+nåt annat: $Y(s) = G(1)U(S)$
+
+\subsection{Blockschemaräkning}
+
+\[
+    r \rightarrow \sum \rightarrow e \rightarrow G_R \rightarrow u \rightarrow G_p \rightarrow y
+\]
+
+y återkopplas med $-1$ till $\sum$ \\
+
+$e = r - y$
+
+\[
+    b \rightarrow G \rightarrow a
+\]
+
+
+$A = GB$
+laplace-transformer som fan
+
+\[
+    Y = G_p U
+\]
+
+\[
+    U = G_r E
+\]
+
+\[
+    E = R \cdot Y
+\]
+
+\[
+    \rightarrow U = G_R (R -Y) \rightarrow Y = G_p G_r (R-Y) \rightarrow Y = \frac{G_p G_k}{1 + G_P G_k}R
+\]
+
+\subsection{svåra saker som jag inte vet}
+
+\subsubsection{övergång tillståndsbeskrivning till G(s)}
+
+Laplaca tillståndsbeskrivning, ropa på hjälp, gråt lite, hoppa av utbildningen.
+
+\[
+    \begin{cases}
+        x = Ax + Bu \\
+        y = Cx + Du \\
+    \end{cases}
+\]
+
+\[
+    \begin{cases}
+        SX = AX + BU & \rightarrow SX - AX = BU \rightarrow (SI - A)X \text{Då s är skalär och A matris} \rightarrow X = (SI - A)^{-1} BU\\
+        Y = CX + DU &\\
+    \end{cases}
+\]
+
+\[
+    Y = [C(SI - A^{-1}B + D)]U
+\]
+
+
+\subsubsection{Övergång G(s) till tillståndbeskrivning}
+
+$$Y(s) = G(s)U(s)$$
+
+Ej entydligt då det finns oändligt många lösningar. Ha lika många tillstånd som ordningen på övertranssaken.
+
+Kolla i formelbladet nånting med kanonska formen sida 4: tillsvidare, återkommande, falafel.
+
+
+\subsection{Impulssvar}
+
+$$u(t) = \delta (t)$$
+
+Överkurs:
+$$U(s) = \int^\infty_0  e^{-st} u(t) dt = \int^\infty_0 e^{-st} \delta (t) dt = e^{-s0} = 1$$
+
+$$Y(s) = G(s) \cdot U(s) = G(s)$$
+
+
+Nu blir det valnigt igen: Stekpade? fan säger grabben? ah, stegsvar!
+
+\[
+u(t) = 
+    \begin{cases}
+        1 & t \geq 0\\
+        0 & t < 0\\
+    \end{cases}
+\]
+
+\[
+    U(s) = \int^\infty_0 e^{-st} u(t) dt = \int^\infty_0 e^{-st} dt = \frac{1}{s} 
+\]
+
+$$Y(s) = G(s)U(s) =G(s) \cdot \frac{1}{s}$$
+
+
+\textbf{Stegsvaret är integralen av impulssvaret}
+
+\subsection{Samband överföringsfunktion och stegsvar.}
+
+$$Y(s) = G(s)U(s) = G(s) \cdot \frac{1}{s}$$
+
+begynnelsevärdeteoremet:
+
+$$\lim_{t \to 0} f(t) = \lim_{s \to \infty} s F(s)$$
+
+Slutvärdesteorem
+$$\lim_{t \to \infty} f(t) = \lim_{s \to 0} s F(s)$$
+
+
+\subsection{Ex:}
+
+$$\lim_{t \to \infty} y(t) = \lim_{s \to 0} sY(s) = \lim_{s\to0} s \cdot G(s) \cdot \frac{1}{s} = \lim_{s\to0} G(s) = G(0)$$
+
+$G(0)$ är den \textit{statiska förstärkningen}
+
+
+\section{föreläsning 3, förvirringen fortsätter}
+
+\subsection{frekvenssvar}
+
+$$u(t) = sin(\omega t)$$
+
+$$y(t) = a sin(\omega t + \phi)$$
+
+$$a = |G(i\omega)|$$
+$$\phi = arg G(i \omega)$$
+
+Upprepa för flera frekvenser, svårt att se med bara en frekvens.
+man får en tabell
+
+\begin{tabular}{c | c |c }
+    $\omega$ & a & $\phi$ \\
+    \hline
+    0.1 & 0.9 & $-10^{\circ}$ \\
+    0.2 & 0.8 & $-20^{\circ}$ \\
+    0.4 & 0.5 & $-60^{\circ}$\\
+    0.8 & 0.2 & $-90^{\circ}$ \\
+\end{tabular}
+
+
+Gör man denna tabell kan man lite bakvägs få fram överföringsfunktionen, exprimentellt.
+
+\subsection{Nyquistdiagram}
+
+papper
+
+\subsection{Bodediagram}
+
+papper
 
 %----------------------------------------------------------------------------------------
 

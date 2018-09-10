@@ -5,7 +5,10 @@
 \geometry{a4paper} % Set the page size to be A4 as opposed to the default US Letter
 
 \usepackage{graphicx} % Required for including pictures
-
+\usepackage{amssymb}
+\def\R{\mathbb{R}}
+\def\N{\mathbb{N}}
+\usepackage{amsmath}
 \usepackage{float} % Allows putting an [H] in \begin{figure} to specify the exact location of the figure
 
 \linespread{1.2} % Line spacing
@@ -85,77 +88,108 @@
 \newpage % Begins the essay on a new page instead of on the same page as the table of contents 
 
 
-\section{Introduction} % Major section
+\section{Grundläggande berepp} % Major section
 
-Content 
+\paragraph{Utfall}
+Resultatet av ett slumpmässigt försök. Betecknas: $\omega$
+\paragraph{Händelse}
+Samling av ett eller flera utfall. Betecknas: $A, B \ldots$
+\paragraph{Utfallsrum}
+Mängden av möjliga utfall. Betecknas: $\Omega$
 
-\subsection{Subsection 1} % Sub-section
-Some more content
+\begin{itemize}
+    \item Utfallsrum: $\Omega = \{1,2,3,4,5,6\}$
+    \item utfall: $\omega_1 = 1, \omega_2 \ldots$
+    \item Händelse: $A = \text{''Minst 4:a''} = \{\omega_4 , \omega_5 , \omega_6\} = \{4,5,6\}$
+    \item 2 Tärningar (olika): Utfallsrum: $\Omega = \{(1,1),(1,2),(2,1), \ldots\}$ 36 fall
+    \item 2 Tärningar (lika): Utfallsrum: $\Omega = \{(1,1),(1,2),(1,3), \ldots\}$ $\frac{6(6 + 1)}{2} = 21$ fall
+    \item 2 Tärningar (samma): Utfallsrum: $\Omega = \{2,3, \ldots , 12\}$ 11 fall
+\end{itemize}
 
-\subsection{Subsection 2} % Sub-section
+\subsection{Venn-diagram}
+Börja med en fyrkant, det är utfallsrummet. Ett utfall är en punkt i det rummet. En händelse är en samlign av utfall, en yta i diagrammet $A$. Vad är komplemetet till händelsen? dvs. icke $A$: betecknas $A^*$
 
-Some more content
+\paragraph{Två händelser} 
+Vad är: \\
+$A$ eller $B$, det är $A \cup B$. \\
+$A$ och $B$ är snittet $A \cap B$ \\
+Ej överlappande $A$ och $B$, de är \textit{disjunkta}. $A \cap B = \emptyset$ \\
 
-% \begin{figure}[H] % Example image
-% \center{\includegraphics[width=0.5\linewidth]{placeholder}}
-% \caption{Example image.}
-% \label{fig:speciation}
-% \end{figure}
+\subsection{Sannolikhet}
+Betecknas $P(A)$.
 
-\section{Content Section} % Major section
+\paragraph{Kolmogorovs axiomsystem}
+\begin{itemize}
+    \item $0 \leq P(A) \leq 1$
+    \item $P(\Omega) = 1$
+    \item $P(A \cup B) = P(A) + P(B)$
+\end{itemize}
 
-Some more content
+Komplementsatsen: $P(A^*) = 1 - P(A)$
+\[
+    P(A \cup A^*) = \{\text{disjunkta}\} = P(A) + P(A^*) = P(\Omega) = 1
+\]
 
-\subsection{Subsection 1} % Sub-section
+Additionssatsen:
+$P(A \cup B) = P(A) + P(B) - P(A \cap B)$
 
-Some more content
+\[
+    A \cup B = A \cup (A^* \cap B)
+\]
 
-\subsubsection{Subsubsection 2} % Sub-sub-section
+\[
+    P(A \cup B) = P(A) + P(A^* \cap B)
+\]
 
-Some more content
+\[
+    B = (A^* \cap B) \cup (A \cap B)
+\]
 
-\begin{lstlisting}[language=Python]
-import numpy as np
- 
-def incmatrix(genl1,genl2):
-    m = len(genl1)
-    n = len(genl2)
-    M = None #to become the incidence matrix
-    VT = np.zeros((n*m,1), int)  #dummy variable
- 
-    #compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2),1) 
- 
-    for i in range(m-1):
-        for j in range(i+1, m):
-            [r,c] = np.where(M2 == M1[i,j])
-            for k in range(len(r)):
-                VT[(i)*n + r[k]] = 1;
-                VT[(i)*n + c[k]] = 1;
-                VT[(j)*n + r[k]] = 1;
-                VT[(j)*n + c[k]] = 1;
- 
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
- 
-                VT = np.zeros((n*m,1), int)
- 
-    return M
-\end{lstlisting}
+\[
+    P(B) = P(A^* \cap B) + P(A \cap B) \to P(A \cup B) = P(A) + P(B) - P(A \cap B)
+\]
 
+\subsection{Klassiska sannolikhetsdefinitionen}
+Gynnsamma fall, g. möjliga fall, m:
 
-\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+\[
+    P(A) = \frac{g}{m} \quad (= \frac{||A||}{||\Omega||}) \ ||A|| = \text{storleken på } A
+\]
 
-\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
-Figueredo, A.~J. and Wolf, P. S.~A. (2009).
-\newblock Assortative pairing and life history strategy - a cross-cultural
-  study.
-\newblock {\em Human Nature}, 20:317--330.
- 
-\end{thebibliography}
+\[
+    \binom{n}{k} = \frac{n!}{k! \cdot (n-k)!}
+\]
+
+\subsection{Betingad sannolikhet}
+Om vi observerar $A$ hur sannolikt är $B$?
+
+\[
+    P(B | A) = \frac{P(A \cap B)}{P(A)}
+\]
+
+\[
+    P(A \cap B) = P(B | A) \cdot P(A)
+\]
+
+\subsection{Satsen om total sannolikhet}
+Om vi har $n$ händelser $H_1, \ldots, H_n$. \\
+parvis disjunkta. \\
+Täcker utfallsrummet: 
+\[
+    \bigcup_{i = 1}^{n} H_i = \Omega
+\]
+
+Gäller för varje händelse A att:
+
+\[
+    P(A) = \sum_{i = 1}^{n} P(A | H_i)P(H_i)
+\]
+
+\paragraph{Bayes sats}
+\[
+    P(H_i | A) = \frac{P(h_i \cap A)}{P(A)}
+\]
+
 
 %----------------------------------------------------------------------------------------
 
